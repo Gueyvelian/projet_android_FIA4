@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -59,9 +60,9 @@ class MainActivity : ComponentActivity() {
                 topBar = {
                     TopAppBar(
                         title = {
-                            Text("Evènements")
+                            Text("The poisonous mushroom")
                         },
-                        navigationIcon = { Icon(Icons.Default.Menu, contentDescription = null) },
+                        navigationIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                         actions = { Icon(Icons.Default.Favorite, contentDescription = null) })
                 },
                 modifier = Modifier.fillMaxSize()
