@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,15 +27,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.example.myapplication.ui.theme.ChampignonLike
+import com.example.myapplication.ui.theme.Cueillir
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+
+class ScreenDest()
+class ChampignonLikeDest()
+class CueillirDest()
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +60,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun Main(navController: NavController) {
         MyApplicationTheme{
-            //val backStack = remember { mutableStateListOf<Any>(ScreenDest()) }
+            val backStack = remember { mutableStateListOf<Any>(ScreenDest()) }
             Scaffold(
                 topBar = {
                     TopAppBar(
@@ -68,24 +73,20 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize()
             ) { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding))
-                Screen()
-                //NavDisplay(
-                //backStack = backStack,
-                //entryProvider = entryProvider {
-                //    entry<ScreenDest> { Screen({backStack.add(DesoleDest())}, {backStack.add(InscriptionDest())}) }
-                //    entry<DesoleDest> { Desole({backStack.removeLastOrNull() }) }
-                //    entry<InscriptionDest> { Inscription({backStack.removeLastOrNull() }) }
-                //}
-                //)
+                Screen({backStack.add(ChampignonLikeDest())}) { backStack.add(CueillirDest()) }
+                NavDisplay(
+                backStack = backStack,
+                entryProvider = entryProvider {
+                    entry<ScreenDest> { Screen({backStack.add(ChampignonLikeDest())}, {backStack.add(CueillirDest())}) }
+                    entry<ChampignonLikeDest> { ChampignonLike({backStack.removeLastOrNull() }) }
+                    entry<CueillirDest> { Cueillir({backStack.removeLastOrNull() }) }
+                }
+                )
 
             }
         }
     }
 
-    @Composable
-    fun ScreenDest() {
-        TODO("Not yet implemented")
-    }
 }
 
 /*@Composable
@@ -105,7 +106,7 @@ fun GreetingPreview() {
 }*/
 
 @Composable
-fun Screen(/*onclick: () -> Unit, onclickIns: () -> Unit*/) {
+fun Screen(function: () -> Boolean, function1: () -> Boolean) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -117,11 +118,7 @@ fun Screen(/*onclick: () -> Unit, onclickIns: () -> Unit*/) {
             contentDescription = "Amanite",
             modifier = Modifier.size(250.dp)
         )
-        /*Column(){
-            Text("Où : Ecole ingénieur ISIS")
-            Text("Quand : 24 octobre")
-        }*/
-        InscriptionButton(/*onclick, onclickIns*/)
+        CueillirButton(function, function1)
 
 
     }
@@ -130,14 +127,14 @@ fun Screen(/*onclick: () -> Unit, onclickIns: () -> Unit*/) {
 }
 
 @Composable
-fun InscriptionButton(/*onclick: () -> Unit, onclickIns: () -> Unit*/) {
+fun CueillirButton(onclickChampignonLike: () -> Boolean, onclickCueillir: () -> Boolean) {
     Row(modifier = Modifier.padding(10.dp)) {
-        Button(onClick = { /*onclickIns()*/ }) {
+        Button(onClick = { onclickCueillir() }) {
             Text("Cueillir")
 
         }
         Button(
-            onClick = { /*onclick()*/ },
+            onClick = { onclickChampignonLike() },
             colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(),
             border = androidx.compose.material3.ButtonDefaults.outlinedButtonBorder
         ) {
