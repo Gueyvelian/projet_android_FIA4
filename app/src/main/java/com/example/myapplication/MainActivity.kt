@@ -38,7 +38,6 @@ import com.example.myapplication.ui.theme.ChampignonLike
 import com.example.myapplication.ui.theme.Cueillir
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-
 class ScreenDest()
 class ChampignonLikeDest()
 class CueillirDest()
@@ -85,6 +84,11 @@ class MainActivity : ComponentActivity() {
 
             }
         }
+    }
+
+    @Composable
+    fun MiseEnPage(x0: () -> Any?) {
+        TODO("Not yet implemented")
     }
 
 }
