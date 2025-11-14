@@ -19,27 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MiseEnPage(onclickretour: () -> Unit) {
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text("Evènements")
-                },
-                navigationIcon = { Icon(Icons.Default.Menu, contentDescription = null) },
-                actions = { Icon(Icons.Default.Favorite, contentDescription = null) })
-        },
-        modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding))
-        ChampignonLike(onclickretour)
-
-    }
-
-}
 
 @Composable
 fun ChampignonLike(onclickretour: () -> Unit) {
@@ -49,7 +28,7 @@ fun ChampignonLike(onclickretour: () -> Unit) {
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        Text("Nous sommes désolé")
+        Text("Les champignons liké")
         Button(onClick = {onclickretour()}) {
             Text("Retour")
 

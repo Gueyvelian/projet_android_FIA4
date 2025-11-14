@@ -20,23 +20,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Cueillir (onclickOk: () -> Unit){
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text("Cueillir")
-                },
-                navigationIcon = { Icon(Icons.Default.ArrowBack, contentDescription = null) },
-                actions = { Icon(Icons.Default.Favorite, contentDescription = null) })
-        },
-        modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding))
-    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize(),

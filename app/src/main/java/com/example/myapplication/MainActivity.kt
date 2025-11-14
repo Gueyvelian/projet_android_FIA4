@@ -60,11 +60,17 @@ class MainActivity : ComponentActivity() {
     fun Main(navController: NavController) {
         MyApplicationTheme{
             val backStack = remember { mutableStateListOf<Any>(ScreenDest()) }
+            val titresDesPages = when (backStack.last()){
+                is ScreenDest -> "Les champignons empoisonés"
+                is ChampignonLikeDest -> "Les champignons likés"
+                is CueillirDest -> "Les champignons rencontrés"
+                else -> {""}
+            }
             Scaffold(
                 topBar = {
                     TopAppBar(
                         title = {
-                            Text("The poisonous mushroom")
+                            Text(titresDesPages)
                         },
                         navigationIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                         actions = { Icon(Icons.Default.Favorite, contentDescription = null) })
@@ -72,7 +78,6 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize()
             ) { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding))
-                Screen({backStack.add(ChampignonLikeDest())}) { backStack.add(CueillirDest()) }
                 NavDisplay(
                 backStack = backStack,
                 entryProvider = entryProvider {
