@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,10 +44,12 @@ class ScreenDest()
 class ChampignonLikeDest()
 class CueillirDest()
 class MainActivity : ComponentActivity() {
+    @SuppressLint("ViewModelConstructorInComposable")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel = ChampignonViewModel()
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "acceuil") {
                 composable("acceuil") {
@@ -83,7 +87,7 @@ class MainActivity : ComponentActivity() {
                 entryProvider = entryProvider {
                     entry<ScreenDest> { Screen({backStack.add(ChampignonLikeDest())}, {backStack.add(CueillirDest())}) }
                     entry<ChampignonLikeDest> { ChampignonLike({backStack.removeLastOrNull() }) }
-                    entry<CueillirDest> { Cueillir({backStack.removeLastOrNull() }) }
+                    entry<CueillirDest> { Cueillir({backStack.removeLastOrNull() }, viewModel()) }
                 }
                 )
 
