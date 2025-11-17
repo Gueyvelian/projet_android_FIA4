@@ -10,7 +10,7 @@ data class Champignon(
     val name: String,
     val commonName: String? = null,
     val agent: String? = null,
-    val distribution: List<String>? = null,
+    // val distribution: List<String>? = null,
     val img: String? = null,
     val type: String? = null
 )

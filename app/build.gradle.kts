@@ -66,4 +66,5 @@ dependencies {
     implementation(libs.ktor.content)
     implementation(libs.ktor.serialization)
     implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 }
