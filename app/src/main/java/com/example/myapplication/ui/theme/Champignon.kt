@@ -13,6 +13,10 @@ data class Champignon(
     // val distribution: List<String>? = null,
     val img: String? = null,
     val type: String? = null
-)
+){
+    fun toChampignonEntity(): ChampignonEntity{
+        return ChampignonEntity(name, commonName, agent, img, type)
+    }
+}
 
 

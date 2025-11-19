@@ -54,7 +54,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val viewModel = ChampignonViewModel()
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "acceuil") {
                 composable("acceuil") {
@@ -100,7 +99,7 @@ class MainActivity : ComponentActivity() {
                     backStack = backStack,
                     entryProvider = entryProvider {
                         entry<ScreenDest> { Screen({backStack.add(ChampignonLikeDest())}, {backStack.add(CueillirDest())}) }
-                        entry<ChampignonLikeDest> { ChampignonLike({backStack.removeLastOrNull() }) }
+                        entry<ChampignonLikeDest> { ChampignonLike(viewModel()) }
                         entry<CueillirDest> { Cueillir(viewModel()) }
                     }
                 )

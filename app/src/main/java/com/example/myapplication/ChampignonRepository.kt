@@ -58,8 +58,8 @@ class ChampignonRepository(application : Application) {
         return listChampignoLike
     }
 
-    suspend fun insertChampignon(champignon: ChampignonEntity){
-        val likeUnChampignon = dao.insertChampignon(champignon)
+    suspend fun insertChampignon(champignon: Champignon){
+        val likeUnChampignon = dao.insertChampignon(champignon.toChampignonEntity())
         return likeUnChampignon
     }
 
