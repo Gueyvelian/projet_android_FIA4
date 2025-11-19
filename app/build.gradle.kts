@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("org.jetbrains.kotlin.plugin.serialization") version "2.2.21"
-
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -68,4 +68,9 @@ dependencies {
     implementation(libs.ktor.serialization)
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+
 }
