@@ -1,23 +1,27 @@
 package com.example.myapplication.ui.theme
 
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -33,47 +38,56 @@ import com.example.myapplication.ChampignonViewModel
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Cueillir(onclickOk: () -> Unit, viewModel: ChampignonViewModel) {
+fun Cueillir(viewModel: ChampignonViewModel) {
     val champignons by viewModel.champignon.collectAsState()
+
     LaunchedEffect(Unit) {
         viewModel.getChampignon()
     }
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(0.dp, 90.dp)
+            .padding(0.dp, 70.dp)
     ) {
-        Button(onClick = {onclickOk()}) {
-            Text("Retour")
-
-        }
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
+        LazyColumn(modifier = Modifier
+            .fillMaxSize()
         ) {
-            itemsIndexed(champignons) { index, champignon ->
+            itemsIndexed(champignons) { _, champignon ->
 
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(12.dp)) {
-                    if(!champignon.img.isNullOrEmpty())
-                    {
-                        Text(text = champignon.name ?: "Sans nom")
-                        Text(text = champignon.type ?: "type non trouvé")
-                        // Utilisation de glide a la place de coil car wikimedia ne fonctionne pas avec coil
-                        GlideImage(
-                            model =  champignon.img,
-                            contentDescription = champignon.name,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                //.height(500.dp)
-                                //.width(500.dp)
+                if (!champignon.img.isNullOrEmpty()) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        shape = MaterialTheme.shapes.medium,
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color(0xFFD8CFC4) // Vert clair
                         )
-                        var like by remember { mutableStateOf(false) }
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
 
-                        LikeChampignon(like = like, onLikeChange = { like = it })
+                            GlideImage(
+                                model = champignon.img,
+                                contentDescription = champignon.name,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                            Text(text = champignon.name ?: "Sans nom")
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight()
+                            ) {
+                                Text(text = champignon.type ?: "Type non trouvé")
+
+                                var like by remember { mutableStateOf(false) }
+
+                                LikeChampignon(
+                                    like = like,
+                                    onLikeChange = { like = it }
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -96,7 +110,10 @@ fun LikeChampignon(
                     tint = MaterialTheme.colorScheme.error
                 )
             } else {
-                Icon(Icons.Default.Favorite, contentDescription = null)
+                Icon(
+                    Icons.Default.Favorite,
+                    contentDescription = null
+                )
             }
         }
     }

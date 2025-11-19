@@ -14,15 +14,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,8 +36,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.myapplication.ui.theme.ChampignonLike
 import com.example.myapplication.ui.theme.Cueillir
@@ -76,19 +81,28 @@ class MainActivity : ComponentActivity() {
                         title = {
                             Text(titresDesPages)
                         },
-                        navigationIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                        actions = { Icon(Icons.Default.Favorite, contentDescription = null) })
+                        navigationIcon = { if (backStack.size > 1 )
+                            Icon(Icons.Default.Search, contentDescription = null)
+                        },
+                        actions = { if (backStack.size > 1 )
+                            IconButton(onClick = {backStack.removeLastOrNull() }) {
+                                Icon(
+                                    Icons.Default.ArrowForward,
+                                    contentDescription = null
+                                )
+                            }
+                        })
                 },
                 modifier = Modifier.fillMaxSize()
             ) { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding))
                 NavDisplay(
-                backStack = backStack,
-                entryProvider = entryProvider {
-                    entry<ScreenDest> { Screen({backStack.add(ChampignonLikeDest())}, {backStack.add(CueillirDest())}) }
-                    entry<ChampignonLikeDest> { ChampignonLike({backStack.removeLastOrNull() }) }
-                    entry<CueillirDest> { Cueillir({backStack.removeLastOrNull() }, viewModel()) }
-                }
+                    backStack = backStack,
+                    entryProvider = entryProvider {
+                        entry<ScreenDest> { Screen({backStack.add(ChampignonLikeDest())}, {backStack.add(CueillirDest())}) }
+                        entry<ChampignonLikeDest> { ChampignonLike({backStack.removeLastOrNull() }) }
+                        entry<CueillirDest> { Cueillir(viewModel()) }
+                    }
                 )
 
             }
