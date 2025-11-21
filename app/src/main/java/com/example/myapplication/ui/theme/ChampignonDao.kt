@@ -15,4 +15,10 @@ interface ChampignonDao {
 
     @Query("DELETE FROM champignonentity WHERE name = :name")
     suspend fun deleteChampignon(name: String)
+
+    @Query("SELECT * FROM champignonentity WHERE name = :name")
+    suspend fun champignonLikeRoom(name: String): ChampignonEntity ?
+
+
+    companion object
 }

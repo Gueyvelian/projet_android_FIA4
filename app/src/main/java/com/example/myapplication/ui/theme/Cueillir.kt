@@ -35,12 +35,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.myapplication.ChampignonViewModel
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.key
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Cueillir(viewModel: ChampignonViewModel) {
-    val champignons by viewModel.champignon.collectAsState()
+    val champignons by viewModel.champignons.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getChampignon()
@@ -49,10 +51,11 @@ fun Cueillir(viewModel: ChampignonViewModel) {
         modifier = Modifier
             .padding(0.dp, 70.dp)
     ) {
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            itemsIndexed(champignons) { _, champignon ->
+            items(champignons, key = { it.name }) { champignon ->
 
                 if (!champignon.img.isNullOrEmpty()) {
                     Card(
@@ -81,50 +84,48 @@ fun Cueillir(viewModel: ChampignonViewModel) {
                             ) {
                                 Text(text = champignon.type ?: "Type non trouvé")
 
-                                var like by remember { mutableStateOf(false) }
-
                                 LikeChampignon(
-                                    like = like,
-                                    onLikeChange = {
-                                        like = it
-                                        if (!like){
-                                            viewModel.addChampignon(champignon)
-                                        }else{
-                                            viewModel.suppChampignon(champignon.name)
-                                        }
-                                                   },
-//metre un like par champignon et pas se truc
+                                    champignon,
+                                    viewModel
                                 )
+
                             }
                         }
                     }
+
                 }
             }
         }
     }
 }
 
+//mettre le like dans le champi
 
 @Composable
 fun LikeChampignon(
-    like: Boolean,
-    onLikeChange: (Boolean) -> Unit
+    champignon: Champignon, viewModel: ChampignonViewModel
 ) {
     Row(modifier = Modifier.padding(10.dp)) {
-        IconButton(onClick = { onLikeChange(!like) }) {
-            if (like) {
+        IconButton(onClick = {
+            if (!champignon.like) {
+                viewModel.addChampignon(champignon)
+            } else {
+                viewModel.suppChampignon(champignon)
+            }
+        }) {
+            if (champignon.like) {
                 Icon(
                     Icons.Default.Favorite,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.error
                 )
 
+
             } else {
                 Icon(
                     Icons.Default.Favorite,
                     contentDescription = null
                 )
-
 
             }
         }

@@ -156,3 +156,27 @@ fun CueillirButton(onclickChampignonLike: () -> Boolean, onclickCueillir: () -> 
     }
 
 }
+
+/*
+@Composable
+fun BackgroundImageExample() {
+    Box(
+        modifier = Modifier.fillMaxSize()  // L'image prendra toute la taille disponible
+    ) {
+        // Image en fond
+        Image(
+            painter = painterResource(id = R.drawable.mon_image),  // Remplace "mon_image" par ton image
+            contentDescription = null,
+            contentScale = ContentScale.Crop,  // L'image sera recadrée pour remplir l'espace
+            modifier = Modifier.fillMaxSize()  // L'image occupe tout l'espace disponible dans le Box
+        )
+
+        // Autres éléments à superposer par-dessus l'image
+        Text(
+            text = "Texte sur le fond",
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier.align(Alignment.Center)  // Centrer le texte par-dessus l'image
+        )
+    }
+}
+ */

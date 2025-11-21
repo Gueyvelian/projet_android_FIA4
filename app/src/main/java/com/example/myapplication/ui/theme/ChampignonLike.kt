@@ -59,51 +59,50 @@ fun ChampignonLike(viewModel: ChampignonViewModel) {
         ) {
             itemsIndexed(champignonslike) { _, champignonlike ->
 
-                if (!champignonlike.img.isNullOrEmpty()) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        shape = MaterialTheme.shapes.medium,
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFFD8CFC4) // Vert clair
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    shape = MaterialTheme.shapes.medium,
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFFD8CFC4) // Vert clair
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+
+                        GlideImage(
+                            model = champignonlike.img,
+                            contentDescription = champignonlike.name,
+                            modifier = Modifier.fillMaxWidth()
                         )
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
 
-                            GlideImage(
-                                model = champignonlike.img,
-                                contentDescription = champignonlike.name,
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                        Text(text = champignonlike.name ?: "Sans nom")
 
-                            Text(text = champignonlike.name ?: "Sans nom")
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight()
+                        ) {
+                            Text(text = champignonlike.type ?: "Type non trouvé")
 
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .fillMaxHeight()
-                            ) {
-                                Text(text = champignonlike.type ?: "Type non trouvé")
-
-                                var like by remember { mutableStateOf(false) }
+                            var like by remember { mutableStateOf(false) }
 
 
-                                DislikeChampignon(
-                                    like = like,
-                                    onLikeChange = { like = it },
-                                    champignonlike,
-                                    viewModel
-                                )
-                            }
+                            /*DislikeChampignon(
+                                like = like,
+                                onLikeChange = { like = it },
+                                champignonlike,
+                                viewModel
+                            )*/
                         }
                     }
                 }
+
             }
         }
     }
 }
-@Composable
+/*@Composable
 fun DislikeChampignon(
     like: Boolean,
     onLikeChange: (Boolean) -> Unit,champignonlike: ChampignonEntity, viewModel: ChampignonViewModel
@@ -122,8 +121,8 @@ fun DislikeChampignon(
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.error
                 )
-                viewModel.suppChampignon(champignonlike.name)
+                viewModel.suppChampignon()
             }
         }
     }
-}
+}*/

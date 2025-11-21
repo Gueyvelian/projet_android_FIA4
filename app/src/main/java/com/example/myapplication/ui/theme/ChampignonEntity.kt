@@ -8,4 +8,4 @@ import androidx.room.PrimaryKey
 @Entity
 data class ChampignonEntity (
     @PrimaryKey val name: String, val commonName: String ?,
-    val agent: String ?, val img : String ?, val type: String ?)
+    val agent: String ?, val img : String ?, val type: String ?, val like: Boolean ?)

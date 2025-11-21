@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Room
 import com.example.myapplication.ui.theme.AppDatabase
 import com.example.myapplication.ui.theme.Champignon
+import com.example.myapplication.ui.theme.ChampignonDao
 import com.example.myapplication.ui.theme.ChampignonEntity
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -43,9 +44,18 @@ class ChampignonRepository(application : Application) {
     }
     val url = "https://toxicshrooms.vercel.app/api/mushrooms"
     suspend fun listeChampignons(): List<Champignon> {
-        return client.request(url) {
+        val liste =  client.request(url) {
             method = HttpMethod.Get
-        }.body()
+        }.body<List<Champignon>>()
+        for (i in liste){
+            if (dao.champignonLikeRoom(i.name) != null){
+                i.like = true
+            }
+            else{
+                i.like = false
+            }
+        }
+        return liste
     }
 
     val database = Room.databaseBuilder( application, AppDatabase::class.java, "database-name" )
@@ -71,3 +81,4 @@ class ChampignonRepository(application : Application) {
 
 
 }
+

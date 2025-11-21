@@ -10,12 +10,12 @@ data class Champignon(
     val name: String,
     val commonName: String? = null,
     val agent: String? = null,
-    // val distribution: List<String>? = null,
     val img: String? = null,
-    val type: String? = null
+    val type: String? = null,
+    var like: Boolean = false
 ){
     fun toChampignonEntity(): ChampignonEntity{
-        return ChampignonEntity(name, commonName, agent, img, type)
+        return ChampignonEntity(name, commonName, agent, img, type, like)
     }
 }
 

@@ -1,6 +1,8 @@
 package com.example.myapplication
 
 import android.app.Application
+import android.util.Log
+import androidx.compose.animation.core.copy
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,34 +13,57 @@ import kotlinx.coroutines.launch
 import kotlin.collections.listOf
 
 
-class ChampignonViewModel(application: Application): AndroidViewModel(application) {
+class ChampignonViewModel(application: Application) : AndroidViewModel(application) {
     val repository = ChampignonRepository(application)
-    val champignon = MutableStateFlow<List<Champignon>>(emptyList())
+    val champignons = MutableStateFlow<List<Champignon>>(emptyList())
     val champignonFavori = MutableStateFlow<List<ChampignonEntity>>(emptyList())
 
 
     fun getChampignon() {
         viewModelScope.launch {
-            champignon.value = repository.listeChampignons()
+            champignons.value = repository.listeChampignons()
         }
     }
+
     fun getChampignonlike() {
         viewModelScope.launch {
             champignonFavori.value = repository.getFavChampignon()
         }
     }
 
-    fun suppChampignon(name : String) {
+    fun suppChampignon(champignon: Champignon) {
         viewModelScope.launch {
-            repository.deleteChampignon(name)
-            getChampignonlike()
+            repository.deleteChampignon(champignon.name)
+            Log.v("lucie", "sippChampignon ${champignon.like}")
+
+
         }
+        champignons.value = champignons.value.map {
+            if (it.name == champignon.name) {
+                it.copy(like = false)
+            } else {
+                it
+            }
+        }
+
     }
 
-    fun addChampignon(champignonAdd: Champignon) {
+    //aller voir pourquoi on ne peu pas le metre dans le viewmodelscope
+
+    fun addChampignon(champignon: Champignon) {
         viewModelScope.launch {
-            repository.insertChampignon(champignonAdd)
-            getChampignonlike()
+            repository.insertChampignon(champignon)
+            Log.v("lucie", "addChampignon ${champignon.like}")
+
+
         }
+        champignons.value = champignons.value.map {
+            if (it.name == champignon.name) {
+                it.copy(like = true)
+            } else {
+                it
+            }
+        }
+
     }
 }
