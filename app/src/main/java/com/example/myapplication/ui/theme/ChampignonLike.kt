@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
@@ -40,6 +41,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.myapplication.ChampignonViewModel
+import androidx.compose.foundation.lazy.items
+
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -54,10 +57,11 @@ fun ChampignonLike(viewModel: ChampignonViewModel) {
         modifier = Modifier
             .padding(0.dp, 70.dp)
     ) {
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            itemsIndexed(champignonslike) { _, champignonlike ->
+            items(champignonslike, key = { it.name }) {champignonlike ->
 
                 Card(
                     modifier = Modifier
@@ -85,15 +89,10 @@ fun ChampignonLike(viewModel: ChampignonViewModel) {
                         ) {
                             Text(text = champignonlike.type ?: "Type non trouvé")
 
-                            var like by remember { mutableStateOf(false) }
-
-
-                            /*DislikeChampignon(
-                                like = like,
-                                onLikeChange = { like = it },
+                            DislikeChampignon(
                                 champignonlike,
                                 viewModel
-                            )*/
+                            )
                         }
                     }
                 }
@@ -102,27 +101,19 @@ fun ChampignonLike(viewModel: ChampignonViewModel) {
         }
     }
 }
-/*@Composable
+
+@Composable
 fun DislikeChampignon(
-    like: Boolean,
-    onLikeChange: (Boolean) -> Unit,champignonlike: ChampignonEntity, viewModel: ChampignonViewModel
+    champignonlike: ChampignonEntity,
+    viewModel: ChampignonViewModel
 ) {
     Row(modifier = Modifier.padding(10.dp)) {
-        IconButton(onClick = { onLikeChange(!like) }) {
-            if (like) {
-                Icon(
-                    Icons.Default.Favorite,
-                    contentDescription = null
-                )
+        IconButton(onClick = { viewModel.suppChampignonLike(champignonlike.toChampignon()) }) {
 
-            } else {
-                Icon(
-                    Icons.Default.Favorite,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error
-                )
-                viewModel.suppChampignon()
-            }
+            Icon(
+                Icons.Default.Delete,
+                contentDescription = null
+            )
         }
     }
-}*/
+}

@@ -88,11 +88,9 @@ fun Cueillir(viewModel: ChampignonViewModel) {
                                     champignon,
                                     viewModel
                                 )
-
                             }
                         }
                     }
-
                 }
             }
         }
