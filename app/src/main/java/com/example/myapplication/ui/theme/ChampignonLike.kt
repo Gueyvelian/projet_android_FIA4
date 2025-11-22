@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -42,7 +44,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.myapplication.ChampignonViewModel
 import androidx.compose.foundation.lazy.items
-
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -58,62 +61,91 @@ fun ChampignonLike(viewModel: ChampignonViewModel) {
             .padding(0.dp, 70.dp)
     ) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            // Padding et espacement cohérents avec Cueillir.kt
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(champignonslike, key = { it.name }) {champignonlike ->
+            items(champignonslike, key = { it.name }) { champignon ->
+                ChampignonFavoriCard(
+                    champignonEntity = champignon,
+                    viewModel = viewModel
+                )
+            }
+        }
+    }
+}
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    shape = MaterialTheme.shapes.medium,
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFFD8CFC4) // Vert clair
-                    )
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun ChampignonFavoriCard(champignonEntity: ChampignonEntity, viewModel: ChampignonViewModel) {
+    if (champignonEntity.img.isNullOrEmpty()) return
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column {
+            GlideImage(
+                model = champignonEntity.img,
+                contentDescription = champignonEntity.name,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .clip(MaterialTheme.shapes.large),
+                contentScale = ContentScale.Crop
+            )
+
+            // Contenu textuel structuré comme dans Cueillir.kt
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = champignonEntity.name ?: "Sans nom",
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = champignonEntity.commonname ?: "Nom commun non trouvé",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = champignonEntity.type ?: "Type non trouvé",
+                        style = MaterialTheme.typography.labelMedium
+                    )
 
-                        GlideImage(
-                            model = champignonlike.img,
-                            contentDescription = champignonlike.name,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        Text(text = champignonlike.name ?: "Sans nom")
-
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight()
-                        ) {
-                            Text(text = champignonlike.type ?: "Type non trouvé")
-
-                            DislikeChampignon(
-                                champignonlike,
-                                viewModel
-                            )
-                        }
-                    }
+                    // Bouton de suppression qui prend directement l'entité
+                    DislikeButton(
+                        champignonEntity = champignonEntity,
+                        viewModel = viewModel
+                    )
                 }
-
             }
         }
     }
 }
 
 @Composable
-fun DislikeChampignon(
-    champignonlike: ChampignonEntity,
-    viewModel: ChampignonViewModel
-) {
-    Row(modifier = Modifier.padding(10.dp)) {
-        IconButton(onClick = { viewModel.suppChampignonLike(champignonlike.toChampignon()) }) {
-
-            Icon(
-                Icons.Default.Delete,
-                contentDescription = null
-            )
-        }
+fun DislikeButton(champignonEntity: ChampignonEntity, viewModel: ChampignonViewModel) {
+    IconButton(onClick = { viewModel.suppChampignonLike(champignonEntity.toChampignon()) }) {
+        Icon(
+            imageVector = Icons.Default.Delete,
+            contentDescription = "Supprimer des favoris",
+            // Utilise la couleur d'erreur du thème pour une action destructive
+            tint = MaterialTheme.colorScheme.error
+        )
     }
 }

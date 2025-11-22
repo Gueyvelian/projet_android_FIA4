@@ -8,14 +8,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Champignon(
     val name: String,
-    val commonName: String? = null,
+    val commonname: String? = null,
     val agent: String? = null,
     val img: String? = null,
     val type: String? = null,
     var like: Boolean = false
 ){
     fun toChampignonEntity(): ChampignonEntity{
-        return ChampignonEntity(name, commonName, agent, img, type, like)
+        return ChampignonEntity(name, commonname, agent, img, type, like)
     }
 }
 

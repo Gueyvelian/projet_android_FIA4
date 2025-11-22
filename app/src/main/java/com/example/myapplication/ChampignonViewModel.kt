@@ -70,15 +70,7 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch {
             repository.deleteChampignon(champignon.name)
             Log.v("lucie", "sippChampignon ${champignon.like}")
-
-
-        }
-        champignonFavori.value = champignonFavori.value.map {
-            if (it.name == champignon.name) {
-                it.copy(like = false)
-            } else {
-                it
-            }
+            getChampignonlike()
         }
 
     }
