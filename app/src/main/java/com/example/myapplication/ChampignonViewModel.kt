@@ -2,26 +2,48 @@ package com.example.myapplication
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.animation.core.copy
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.ui.theme.Champignon
 import com.example.myapplication.ui.theme.ChampignonEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlin.collections.listOf
 
 
 class ChampignonViewModel(application: Application) : AndroidViewModel(application) {
     val repository = ChampignonRepository(application)
     val champignons = MutableStateFlow<List<Champignon>>(emptyList())
     val champignonFavori = MutableStateFlow<List<ChampignonEntity>>(emptyList())
+    val texteRecherche = mutableStateOf("")
 
 
     fun getChampignon() {
         viewModelScope.launch {
             champignons.value = repository.listeChampignons()
+        }
+    }
+
+    /**
+     * Appelé pour mettre à jour la recherche.
+     * @param nouveauTexte Le texte entré par l'utilisateur.
+     */
+    fun texteRecherche(nouveauTexte: String) {
+        texteRecherche.value = nouveauTexte
+        // Lance la recherche à chaque modification du texte
+        rechercherChampignons(nouveauTexte)
+    }
+
+    /**
+     * Lance la recherche dans le Repository et met à jour le StateFlow `_champignons`.
+     * @param nom Le nom du champignon à rechercher.
+     */
+    fun rechercherChampignons(nom: String) {
+        viewModelScope.launch {
+            // Appelle la fonction du repository qui filtre la liste
+            val resultatRecherche = repository.getChampignonRecherche(nom)
+            // Met à jour la liste des champignons qui sera affichée dans Cueillir.kt
+            champignons.value = resultatRecherche
         }
     }
 

@@ -43,6 +43,11 @@ class ChampignonRepository(application : Application) {
 
     }
     val url = "https://toxicshrooms.vercel.app/api/mushrooms"
+
+    val database = Room.databaseBuilder( application, AppDatabase::class.java, "database-name" )
+        .fallbackToDestructiveMigration()
+        .build()
+    val dao = database.champignonDao()
     suspend fun listeChampignons(): List<Champignon> {
         val liste =  client.request(url) {
             method = HttpMethod.Get
@@ -58,11 +63,15 @@ class ChampignonRepository(application : Application) {
         return liste
     }
 
-    val database = Room.databaseBuilder( application, AppDatabase::class.java, "database-name" )
-        .fallbackToDestructiveMigration()
-        .build()
-    val dao = database.champignonDao()
-
+    suspend fun getChampignonRecherche(name: String): List<Champignon>{
+        val tousLesChampignons = listeChampignons()
+        if (name.isBlank()) {
+            return tousLesChampignons
+        }
+        return tousLesChampignons.filter { champignon ->
+            champignon.name.contains(name, ignoreCase = true)
+        }
+    }
     suspend fun getFavChampignon(): List<ChampignonEntity>{
         val listChampignoLike = dao.getFavChampignon()
         return listChampignoLike

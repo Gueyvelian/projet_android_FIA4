@@ -176,7 +176,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     // 1. L'image en arrière-plan
                     Image(
-                        painter = painterResource(id = R.drawable.foretimage),
+                        painter = painterResource(id = R.drawable.fondnoir),
                         contentDescription = "Fond d'écran forêt",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop // Remplit l'espace sans déformer

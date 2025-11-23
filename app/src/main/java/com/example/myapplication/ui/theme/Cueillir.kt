@@ -1,11 +1,12 @@
 package com.example.myapplication.ui.theme
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,38 +32,94 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.myapplication.ChampignonViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.navigation.ActivityNavigator
-import androidx.navigation.NavController
-import com.example.myapplication.ChampignonLikeDest
+import androidx.compose.ui.text.style.TextAlign
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Cueillir(viewModel: ChampignonViewModel, backStack: MutableList<Any>) {
     val champignons by viewModel.champignons.collectAsState()
-
+    val texteRecherche by viewModel.texteRecherche
     LaunchedEffect(Unit) {
         viewModel.getChampignon()
     }
+
+    // --- DÉBUT DE LA MODIFICATION ---
+
+    // Ce DisposableEffect s'occupe du nettoyage lorsque l'on quitte l'écran
+    DisposableEffect(Unit) {
+        // La partie "onDispose" est exécutée lorsque le composant quitte l'écran
+        onDispose {
+            // On appelle la fonction du ViewModel pour effacer le texte de recherche
+            viewModel.texteRecherche("")
+        }
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-
-        // Ajoute un padding global à la liste pour qu'elle ne colle pas aux bords de l'écran.
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 100.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(
+            horizontal = 16.dp,
+            vertical = 10.dp
+        ),
         verticalArrangement = Arrangement.spacedBy(16.dp) // Espace vertical entre les cartes.
     ) {
-        items(items = champignons, key = { it.name }) { champignon ->
-            ChampignonCard(
-                champignon = champignon,
-                viewModel = viewModel
+        stickyHeader {
+            // --- DÉBUT DE LA MODIFICATION ---
+
+            // On retire la Column et on applique les modificateurs directement
+            OutlinedTextField(
+                value = texteRecherche,
+                // J'ai corrigé le nom de la fonction, il semble que ce soit onTexteRechercheChange dans votre ViewModel
+                onValueChange = { viewModel.texteRecherche(it) },
+                label = { Text("Rechercher un champignon...") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    // On enlève le fond global et on ajoute un simple padding vertical
+                    .padding(vertical = 8.dp),
+                // C'est ici que l'on définit les couleurs du champ de texte
+                colors = OutlinedTextFieldDefaults.colors(
+                    // Définit la couleur de fond du champ
+                    unfocusedContainerColor = Color.White,
+                    focusedContainerColor = Color.White,
+                    // Vous pouvez aussi personnaliser la couleur du texte et du label si besoin
+                    unfocusedTextColor = Color.Black,
+                    focusedTextColor = Color.Black
+                ),
+                singleLine = true // Recommandé pour les barres de recherche
             )
+            // --- FIN DE LA MODIFICATION ---
+        }
+        if (champignons.isEmpty() && texteRecherche.isNotEmpty()) {
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillParentMaxSize()
+                        .padding(top = 100.dp),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    Text(
+                        text = "Aucun résultat trouvé",
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center,
+                        color = Color.White
+                    )
+                }
+            }
+        } else {
+            items(items = champignons, key = { it.name }) { champignon ->
+                ChampignonCard(
+                    champignon = champignon,
+                    viewModel = viewModel
+                )
+            }
         }
     }
 }
-
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -76,8 +133,10 @@ fun ChampignonCard(champignon: Champignon, viewModel: ChampignonViewModel) {
         shape = MaterialTheme.shapes.large, // Un peu plus arrondi.
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Ajoute une ombre légère.
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant // Utilise une couleur du thème.
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceVariant, // Utilise une couleur du thème.
+        ),
+        border = BorderStroke(1.dp, Color.White), // Ajoute une bordure.
+
     ) {
         Column {
             GlideImage(
