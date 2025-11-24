@@ -3,6 +3,7 @@ package com.example.myapplication.model
 import com.example.myapplication.repository.ChampignonEntity
 import kotlinx.serialization.Serializable
 
+// Permet de récupérer des objets identiques à ceux de l'api
 @Serializable
 data class Champignon(
     val name: String,

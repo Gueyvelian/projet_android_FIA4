@@ -18,7 +18,7 @@ import io.ktor.client.request.request
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
 
-class ChampignonRepository(application : Application) {
+class ChampignonRepository(application: Application) {
     val client = HttpClient(CIO) {
 
         install(ContentNegotiation) {
@@ -40,26 +40,29 @@ class ChampignonRepository(application : Application) {
     }
     val url = "https://toxicshrooms.vercel.app/api/mushrooms"
 
-    val database = Room.databaseBuilder( application, AppDatabase::class.java, "database-name" )
+    val database = Room.databaseBuilder(application, AppDatabase::class.java, "database-name")
         .fallbackToDestructiveMigration()
         .build()
     val dao = database.champignonDao()
+
+    // Permet de récupérer la liste des champignons de l'api et d'établir l'état de like
     suspend fun listeChampignons(): List<Champignon> {
-        val liste =  client.request(url) {
+        val liste = client.request(url) {
             method = HttpMethod.Get
         }.body<List<Champignon>>()
-        for (i in liste){
-            if (dao.champignonLikeRoom(i.name) != null){
+        for (i in liste) {
+            if (dao.champignonLikeRoom(i.name) != null) {
                 i.like = true
-            }
-            else{
+            } else {
                 i.like = false
             }
         }
         return liste
     }
 
-    suspend fun getChampignonRecherche(name: String): List<Champignon>{
+// Permet de rechercher un champignon dans la liste des champignons
+
+    suspend fun getChampignonRecherche(name: String): List<Champignon> {
         val tousLesChampignons = listeChampignons()
         if (name.isBlank()) {
             return tousLesChampignons
@@ -68,17 +71,21 @@ class ChampignonRepository(application : Application) {
             champignon.name.contains(name, ignoreCase = true)
         }
     }
-    suspend fun getFavChampignon(): List<ChampignonEntity>{
+
+    // Permet de récupérer la liste des champignon liké
+    suspend fun getFavChampignon(): List<ChampignonEntity> {
         val listChampignoLike = dao.getFavChampignon()
         return listChampignoLike
     }
 
-    suspend fun insertChampignon(champignon: Champignon){
+    // Permet d'ajouter un champignon liké dans la base de donnée
+    suspend fun insertChampignon(champignon: Champignon) {
         val likeUnChampignon = dao.insertChampignon(champignon.toChampignonEntity())
         return likeUnChampignon
     }
 
-    suspend fun deleteChampignon(name: String){
+    // Permet de suprimer un champignon liké de la base de donnée
+    suspend fun deleteChampignon(name: String) {
         val suprChampignon = dao.deleteChampignon(name)
         return suprChampignon
 

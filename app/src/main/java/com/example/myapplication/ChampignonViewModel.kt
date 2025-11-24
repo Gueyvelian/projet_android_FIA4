@@ -17,7 +17,7 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
     val champignonFavori = MutableStateFlow<List<ChampignonEntity>>(emptyList())
     val texteRecherche = mutableStateOf("")
 
-
+// Permet d'afficher la liste des champignon de l'api dans la page Cueillir.kt
     fun getChampignon() {
         viewModelScope.launch {
             try {
@@ -27,26 +27,18 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
             } catch (e: Exception) {
                 // Si une erreur (n'importe quelle exception) se produit...
                 Log.e("ViewModel-Error", "Impossible de charger les champignons: ${e.message}")
-                // On s'assure que la liste est vide pour ne pas afficher d'anciennes données
                 champignons.value = emptyList()
-                // Ici, vous pourriez aussi mettre à jour un autre StateFlow pour afficher un message d'erreur à l'utilisateur
             }
         } }
 
-            /**
-     * Appelé pour mettre à jour la recherche.
-     * @param nouveauTexte Le texte entré par l'utilisateur.
-     */
+// Permet de recupérer le texte de la barre de recherche dans la page Cueillir.kt
     fun texteRecherche(nouveauTexte: String) {
         texteRecherche.value = nouveauTexte
         // Lance la recherche à chaque modification du texte
         rechercherChampignons(nouveauTexte)
     }
 
-    /**
-     * Lance la recherche dans le Repository et met à jour le StateFlow `_champignons`.
-     * @param nom Le nom du champignon à rechercher.
-     */
+// Permet de filtrer la liste des champignon de l'api dans la page Cueillir.kt
     fun rechercherChampignons(nom: String) {
         viewModelScope.launch {
             // Appelle la fonction du repository qui filtre la liste
@@ -55,13 +47,15 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
             champignons.value = resultatRecherche
         }
     }
-
+// Permet d'afficher la liste des champignon liké dans la page ChampignonLike.kt
     fun getChampignonlike() {
         viewModelScope.launch {
             champignonFavori.value = repository.getFavChampignon()
         }
     }
 
+// Permet de suprimer un champignon liké de la base de donnée depuis la page Cueillir.kt,
+// et rafréchi la page ChampignonLike.kt
     fun suppChampignon(champignon: Champignon) {
         viewModelScope.launch {
             repository.deleteChampignon(champignon.name)
@@ -79,7 +73,8 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
 
     }
 
-
+// Permet d'ajouter un champignon liké dans la base de donnée depuis la page Cueillir.kt,
+// et rafréchi la page Cueillir.kt
     fun addChampignon(champignon: Champignon) {
         viewModelScope.launch {
             repository.insertChampignon(champignon)
@@ -96,6 +91,10 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
         }
 
     }
+
+// Permet de suprimer un champignon liké de la base de donnée depuis la page ChampignonLike.kt,
+// et rafréchi la page ChampignonLike.kt
+
     fun suppChampignonLike(champignon: Champignon) {
         viewModelScope.launch {
             repository.deleteChampignon(champignon.name)

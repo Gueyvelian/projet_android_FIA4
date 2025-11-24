@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.myapplication.model.Champignon
 
+// Permet de stcker des objets identiques à ceux de l'api pour les mettres dans la base de donné
 @Entity
 data class ChampignonEntity (
     @PrimaryKey val name: String, val commonname: String ?,

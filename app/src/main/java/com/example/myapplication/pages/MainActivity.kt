@@ -47,7 +47,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.compose.material.icons.filled.Home // J'ai vu que vous utilisiez AccountCircle, Home est plus standard
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.geometry.Offset
@@ -76,15 +76,17 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun Main() {
+        // Définition du squellette de l'aplication
         MyApplicationTheme {
             val backStack = remember { mutableStateListOf<Any>(ScreenDest()) }
             val titresDesPages = when (backStack.last()) {
-                is ScreenDest -> "Les champignons" // Titre simplifié
+                is ScreenDest -> "Les champignons"
                 is ChampignonLikeDest -> "Vos favoris"
                 is CueillirDest -> "Découvrir"
                 else -> ""
             }
             Scaffold(
+                // Définition de la topBar et de BottomBar
                 topBar = {
                     TopAppBar(
                         title = { Text(titresDesPages, fontWeight = FontWeight.Bold) },
@@ -93,15 +95,14 @@ class MainActivity : ComponentActivity() {
                             if (backStack.size > 1) {
                                 IconButton(onClick = { backStack.removeLastOrNull() }) {
                                     Icon(
-                                        imageVector = Icons.Default.ArrowBack, // Icône de retour standard
+                                        imageVector = Icons.Default.ArrowBack,
                                         contentDescription = "Retour"
                                     )
                                 }
                             }
                         },
-                        // On applique les mêmes couleurs que la BottomAppBar pour la cohérence
                         colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.surface, // Même couleur que la BottomBar
+                            containerColor = MaterialTheme.colorScheme.surface,
                             titleContentColor = MaterialTheme.colorScheme.onSurface,
                             navigationIconContentColor = MaterialTheme.colorScheme.onSurface
                         )
@@ -126,7 +127,6 @@ class MainActivity : ComponentActivity() {
                                 backStack.clear()
                                 backStack.add(ScreenDest())
                             },
-                            // J'utilise l'icône Home, plus standard pour l'accueil
                             icon = { Icon(Icons.Default.Home, contentDescription = "Accueil") },
                             label = { Text("Accueil") }
                         )
@@ -149,17 +149,17 @@ class MainActivity : ComponentActivity() {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(innerPadding) // Applique le padding du Scaffold
+                        .padding(innerPadding)
                 ) {
-                    // 1. L'image en arrière-plan
+                    // L'image en arrière-plan présente sur toute l'application
                     Image(
                         painter = painterResource(id = R.drawable.fondnoir),
                         contentDescription = "Fond d'écran forêt",
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop // Remplit l'espace sans déformer
+                        contentScale = ContentScale.Crop
                     )
 
-                    // 2. Le contenu de la navigation par-dessus
+                    // Le contenu de la navigation
                     NavDisplay(
                         backStack = backStack,
                         entryProvider = entryProvider {
@@ -169,7 +169,6 @@ class MainActivity : ComponentActivity() {
                                     { backStack.add(CueillirDest()) })
                             }
                             entry<ChampignonLikeDest> { ChampignonLike(viewModel()) }
-                            // J'ai mis à jour l'appel à Cueillir pour être cohérent avec le nouveau style
                             entry<CueillirDest> { Cueillir(viewModel(), backStack) }
                         }
                     )
@@ -178,64 +177,57 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
+// Permet d'avoir sur la page d'accueil les composants voulu (2 boutons)
     @Composable
     fun Screen(onClickFavoris: () -> Unit, onClickCueillir: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp), // Ajoute de la marge autour de la colonne
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center // Centre les boutons verticalement
+            verticalArrangement = Arrangement.Center
         ) {
-            // Premier bouton-image "Découvrir"
             ImageButton(
                 text = "Découvrir",
-                imageResId = R.drawable.champignonrecherche, // Votre image pour la recherche
+                imageResId = R.drawable.champignonrecherche,
                 onClick = onClickCueillir
             )
 
-            // Espace entre les deux boutons
-            Spacer(modifier = Modifier.height(30.dp)) // J'ai un peu réduit l'espace pour l'équilibre
+            Spacer(modifier = Modifier.height(30.dp))
 
-            // Deuxième bouton-image "Favoris"
             ImageButton(
                 text = "Favoris",
-                imageResId = R.drawable.champignonlike, // Votre image pour les favoris
+                imageResId = R.drawable.champignonlike,
                 onClick = onClickFavoris
             )
         }
     }
 
+    // Permet de créer les deux boutons sur la page d'accueil
     @Composable
     fun ImageButton(text: String, imageResId: Int, onClick: () -> Unit) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                // --- C'EST LA LIGNE À MODIFIER ---
-                .height(220.dp) // On augmente la hauteur, par exemple de 150.dp à 220.dp
-                .clickable(onClick = onClick), // Rend toute la carte cliquable
-            shape = MaterialTheme.shapes.large, // Coins arrondis
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp) // Ombre portée
+                .height(220.dp)
+                .clickable(onClick = onClick),
+            shape = MaterialTheme.shapes.large,
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
-            // Le Box permet de superposer l'image et le texte
             Box(contentAlignment = Alignment.Center) {
-                // 1. L'image de fond
                 Image(
                     painter = painterResource(id = imageResId),
-                    contentDescription = text, // Pour l'accessibilité
+                    contentDescription = text,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop // L'image remplit l'espace sans se déformer
+                    contentScale = ContentScale.Crop
                 )
 
-                // 2. Le texte par-dessus
                 Text(
                     text = text,
-                    color = Color.White, // Texte en blanc pour être lisible
-                    fontSize = 32.sp, // J'ai aussi légèrement augmenté la taille du texte
-                    fontWeight = FontWeight.Bold, // Police en gras
+                    color = Color.White,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineMedium.copy(
-                        // Ajoute une ombre au texte pour améliorer la lisibilité
                         shadow = Shadow(
                             color = Color.Black.copy(alpha = 0.7f),
                             offset = Offset(4f, 4f),

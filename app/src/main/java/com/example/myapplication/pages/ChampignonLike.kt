@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.myapplication.repository.ChampignonEntity
 
 
+// Page qui permet d'afficher les champignon liké
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ChampignonLike(viewModel: ChampignonViewModel) {
@@ -46,7 +47,7 @@ fun ChampignonLike(viewModel: ChampignonViewModel) {
     LaunchedEffect(Unit) {
         viewModel.getChampignonlike()
     }
-
+    // Si nous avons pas de champignon liké, on affiche un message
     if (champignonslike.isEmpty()) {
 
         Box(
@@ -60,6 +61,7 @@ fun ChampignonLike(viewModel: ChampignonViewModel) {
                 color = Color.White // Couleur du texte en blanc
             )
         }
+        // Sinon on affiche les champignon liké
     } else {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -76,6 +78,7 @@ fun ChampignonLike(viewModel: ChampignonViewModel) {
     }
 }
 
+// Gere l'affichage des champignons liké
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ChampignonFavoriCard(champignonEntity: ChampignonEntity, viewModel: ChampignonViewModel) {
@@ -135,6 +138,7 @@ fun ChampignonFavoriCard(champignonEntity: ChampignonEntity, viewModel: Champign
     }
 }
 
+// Gere l'affichage du bouton "Dislike" ==> icon corbeille
 @Composable
 fun DislikeButton(champignonEntity: ChampignonEntity, viewModel: ChampignonViewModel) {
     IconButton(onClick = { viewModel.suppChampignonLike(champignonEntity.toChampignon()) }) {

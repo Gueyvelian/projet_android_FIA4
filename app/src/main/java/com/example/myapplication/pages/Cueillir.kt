@@ -41,6 +41,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import com.example.myapplication.model.Champignon
 
+// Page qui permet d'afficher les champignons de l'api et de les mettre en favoris
+// et/ou de rechercher un champignon
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Cueillir(viewModel: ChampignonViewModel, backStack: MutableList<Any>) {
@@ -50,11 +52,9 @@ fun Cueillir(viewModel: ChampignonViewModel, backStack: MutableList<Any>) {
         viewModel.getChampignon()
     }
 
-    // Ce DisposableEffect s'occupe du nettoyage lorsque l'on quitte l'écran
+    // Permet de occupe du nettoyage de la bar de recherche lorsque l'on quitte l'écran
     DisposableEffect(Unit) {
-        // La partie "onDispose" est exécutée lorsque le composant quitte l'écran
         onDispose {
-            // On appelle la fonction du ViewModel pour effacer le texte de recherche
             viewModel.texteRecherche("")
         }
     }
@@ -67,30 +67,25 @@ fun Cueillir(viewModel: ChampignonViewModel, backStack: MutableList<Any>) {
         ),
         verticalArrangement = Arrangement.spacedBy(16.dp) // Espace vertical entre les cartes.
     ) {
+        // Ajoute une ligne avec un champ de recherche
         stickyHeader {
-
-            // On retire la Column et on applique les modificateurs directement
             OutlinedTextField(
                 value = texteRecherche,
-                // J'ai corrigé le nom de la fonction, il semble que ce soit onTexteRechercheChange dans votre ViewModel
                 onValueChange = { viewModel.texteRecherche(it) },
                 label = { Text("Rechercher un champignon...") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    // On enlève le fond global et on ajoute un simple padding vertical
                     .padding(vertical = 8.dp),
-                // C'est ici que l'on définit les couleurs du champ de texte
                 colors = OutlinedTextFieldDefaults.colors(
-                    // Définit la couleur de fond du champ
                     unfocusedContainerColor = Color.White,
                     focusedContainerColor = Color.White,
-                    // Vous pouvez aussi personnaliser la couleur du texte et du label si besoin
                     unfocusedTextColor = Color.Black,
                     focusedTextColor = Color.Black
                 ),
-                singleLine = true // Recommandé pour les barres de recherche
+                singleLine = true
             )
         }
+        // Si aucun champignon n'est trouvé, on affiche un message
         if (champignons.isEmpty() && texteRecherche.isNotEmpty()) {
             item {
                 Box(
@@ -107,7 +102,9 @@ fun Cueillir(viewModel: ChampignonViewModel, backStack: MutableList<Any>) {
                     )
                 }
             }
-        } else {
+        }
+        // Sinon on affiche les champignon trouvé
+        else {
             items(items = champignons, key = { it.name }) { champignon ->
                 ChampignonCard(
                     champignon = champignon,
@@ -118,48 +115,41 @@ fun Cueillir(viewModel: ChampignonViewModel, backStack: MutableList<Any>) {
     }
 }
 
-
+// Gère l'affichage des champignons
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ChampignonCard(champignon: Champignon, viewModel: ChampignonViewModel) {
-    // La condition est maintenant ici pour ne pas créer une carte vide.
+    // Nous affichons que les champignons qui ont une image
     if (champignon.img.isNullOrEmpty()) return
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large, // Un peu plus arrondi.
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Ajoute une ombre légère.
+        shape = MaterialTheme.shapes.large,
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant, // Utilise une couleur du thème.
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
-        border = BorderStroke(1.dp, Color.White), // Ajoute une bordure.
+        border = BorderStroke(1.dp, Color.White),
 
     ) {
         Column {
             GlideImage(
                 model = champignon.img,
                 contentDescription = champignon.name,
-                // L'image remplit la largeur et a une hauteur fixe pour un meilleur rendu.
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp)
-                    // Arrondit seulement les coins supérieurs de l'image.
                     .clip(MaterialTheme.shapes.large),
-                contentScale = ContentScale.Crop // Assure que l'image remplit l'espace sans se déformer.
+                contentScale = ContentScale.Crop
             )
 
-            // Contenu textuel de la carte
             Column(modifier = Modifier.padding(16.dp)) {
-                // Le nom du champignon est mis en avant.
                 Text(
                     text = champignon.name ?: "Sans nom",
-                    style = MaterialTheme.typography.titleLarge // Style plus grand pour le titre.
+                    style = MaterialTheme.typography.titleLarge
                 )
-
-                // Espaceur pour une meilleure séparation visuelle.
                 Spacer(modifier = Modifier.height(4.dp))
 
-                // Utilisation d'un style plus discret pour les informations secondaires.
                 Text(
                     text = champignon.commonname ?: "Nom commun non trouvé",
                     style = MaterialTheme.typography.bodyMedium,
@@ -168,11 +158,10 @@ fun ChampignonCard(champignon: Champignon, viewModel: ChampignonViewModel) {
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Utilisation d'une Row pour aligner le type et le bouton de like.
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween // Pousse les éléments aux extrémités.
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = champignon.type ?: "Type non trouvé",
@@ -189,6 +178,7 @@ fun ChampignonCard(champignon: Champignon, viewModel: ChampignonViewModel) {
     }
 }
 
+// Gere les like des chanpignons sur la page découvrir et permet le changement de couleur de l'icon "ceur"
 @Composable
 fun LikeButton(champignon: Champignon, viewModel: ChampignonViewModel) {
     IconButton(onClick = {
@@ -200,15 +190,15 @@ fun LikeButton(champignon: Champignon, viewModel: ChampignonViewModel) {
     }) {
         if (champignon.like) {
             Icon(
-                imageVector = Icons.Default.Favorite, // Icône pleine pour "liké"
+                imageVector = Icons.Default.Favorite,
                 contentDescription = "Ne plus aimer",
-                tint = MaterialTheme.colorScheme.error // Couleur rouge du thème pour indiquer une action importante.
+                tint = MaterialTheme.colorScheme.error
             )
         } else {
             Icon(
-                imageVector = Icons.Default.FavoriteBorder, // Icône vide pour "non liké"
+                imageVector = Icons.Default.FavoriteBorder,
                 contentDescription = "Aimer",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant // Couleur discrète.
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
