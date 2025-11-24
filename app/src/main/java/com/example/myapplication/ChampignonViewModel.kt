@@ -20,11 +20,22 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
 
     fun getChampignon() {
         viewModelScope.launch {
-            champignons.value = repository.listeChampignons()
-        }
-    }
+            // --- DÉBUT DE LA CORRECTION ---
+            try {
+                // On essaie de faire l'appel réseau
+                champignons.value = repository.listeChampignons()
+                Log.d("ViewModel-Success", "Champignons chargés avec succès.")
+            } catch (e: Exception) {
+                // Si une erreur (n'importe quelle exception) se produit...
+                Log.e("ViewModel-Error", "Impossible de charger les champignons: ${e.message}")
+                // On s'assure que la liste est vide pour ne pas afficher d'anciennes données
+                champignons.value = emptyList()
+                // Ici, vous pourriez aussi mettre à jour un autre StateFlow pour afficher un message d'erreur à l'utilisateur
+            }
+            // --- FIN DE LA CORRECTION ---
+        } }
 
-    /**
+            /**
      * Appelé pour mettre à jour la recherche.
      * @param nouveauTexte Le texte entré par l'utilisateur.
      */
