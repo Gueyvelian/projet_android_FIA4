@@ -1,10 +1,10 @@
-package com.example.myapplication.ui.theme
+package com.example.myapplication.ui.theme.pages
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
+import com.example.myapplication.ui.theme.model.Champignon
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -48,8 +49,6 @@ fun Cueillir(viewModel: ChampignonViewModel, backStack: MutableList<Any>) {
     LaunchedEffect(Unit) {
         viewModel.getChampignon()
     }
-
-    // --- DÉBUT DE LA MODIFICATION ---
 
     // Ce DisposableEffect s'occupe du nettoyage lorsque l'on quitte l'écran
     DisposableEffect(Unit) {
@@ -62,14 +61,13 @@ fun Cueillir(viewModel: ChampignonViewModel, backStack: MutableList<Any>) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(
+        contentPadding = PaddingValues(
             horizontal = 16.dp,
             vertical = 10.dp
         ),
         verticalArrangement = Arrangement.spacedBy(16.dp) // Espace vertical entre les cartes.
     ) {
         stickyHeader {
-            // --- DÉBUT DE LA MODIFICATION ---
 
             // On retire la Column et on applique les modificateurs directement
             OutlinedTextField(
@@ -92,7 +90,6 @@ fun Cueillir(viewModel: ChampignonViewModel, backStack: MutableList<Any>) {
                 ),
                 singleLine = true // Recommandé pour les barres de recherche
             )
-            // --- FIN DE LA MODIFICATION ---
         }
         if (champignons.isEmpty() && texteRecherche.isNotEmpty()) {
             item {

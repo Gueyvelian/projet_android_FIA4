@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.ui.theme.pages
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,18 +9,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,7 +23,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,25 +30,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.example.myapplication.ui.theme.ChampignonLike
-import com.example.myapplication.ui.theme.Cueillir
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -63,17 +48,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.filled.Home // J'ai vu que vous utilisiez AccountCircle, Home est plus standard
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.ui.graphics.BlendMode.Companion.Screen
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Shadow
+import com.example.myapplication.R
 
 
 class ScreenDest()
@@ -107,7 +86,6 @@ class MainActivity : ComponentActivity() {
             }
             Scaffold(
                 topBar = {
-                    // --- MODIFICATION DE LA TOPAPPBAR ---
                     TopAppBar(
                         title = { Text(titresDesPages, fontWeight = FontWeight.Bold) },
                         navigationIcon = {
@@ -168,7 +146,6 @@ class MainActivity : ComponentActivity() {
 
                 modifier = Modifier.fillMaxSize()
             ) { innerPadding ->
-                // --- DÉBUT DE LA MODIFICATION ---
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -197,13 +174,11 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                 }
-                // --- FIN DE LA MODIFICATION ---
             }
         }
     }
 
 
-    // NOUVELLE VERSION DE VOTRE ÉCRAN D'ACCUEIL
     @Composable
     fun Screen(onClickFavoris: () -> Unit, onClickCueillir: () -> Unit) {
         Column(
@@ -232,7 +207,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // COMPOSABLE RÉUTILISABLE POUR LES BOUTONS-IMAGES
     @Composable
     fun ImageButton(text: String, imageResId: Int, onClick: () -> Unit) {
         Card(
@@ -262,9 +236,9 @@ class MainActivity : ComponentActivity() {
                     fontWeight = FontWeight.Bold, // Police en gras
                     style = MaterialTheme.typography.headlineMedium.copy(
                         // Ajoute une ombre au texte pour améliorer la lisibilité
-                        shadow = androidx.compose.ui.graphics.Shadow(
+                        shadow = Shadow(
                             color = Color.Black.copy(alpha = 0.7f),
-                            offset = androidx.compose.ui.geometry.Offset(4f, 4f),
+                            offset = Offset(4f, 4f),
                             blurRadius = 8f
                         )
                     )

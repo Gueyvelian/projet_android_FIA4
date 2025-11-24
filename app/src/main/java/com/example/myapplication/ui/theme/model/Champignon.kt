@@ -1,9 +1,7 @@
-package com.example.myapplication.ui.theme
+package com.example.myapplication.ui.theme.model
 
-import android.media.Image
+import com.example.myapplication.ui.theme.repository.ChampignonEntity
 import kotlinx.serialization.Serializable
-
-
 
 @Serializable
 data class Champignon(
@@ -14,9 +12,7 @@ data class Champignon(
     val type: String? = null,
     var like: Boolean = false
 ){
-    fun toChampignonEntity(): ChampignonEntity{
+    fun toChampignonEntity(): ChampignonEntity {
         return ChampignonEntity(name, commonname, agent, img, type, like)
     }
 }
-
-

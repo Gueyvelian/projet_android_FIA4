@@ -1,11 +1,10 @@
-package com.example.myapplication.ui.theme
+package com.example.myapplication.ui.theme.pages
 
 
-import android.R.attr.background
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,10 +32,10 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.myapplication.ChampignonViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.isEmpty
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
+import com.example.myapplication.ui.theme.repository.ChampignonEntity
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -44,13 +43,10 @@ import androidx.compose.ui.text.style.TextAlign
 fun ChampignonLike(viewModel: ChampignonViewModel) {
     val champignonslike by viewModel.champignonFavori.collectAsState()
 
-    // Ce LaunchedEffect reste utile si votre Flow n'est pas "chaud"
-    // ou si vous voulez forcer un rafraîchissement à l'entrée.
     LaunchedEffect(Unit) {
         viewModel.getChampignonlike()
     }
 
-    // --- DÉBUT DE LA MODIFICATION ---
     if (champignonslike.isEmpty()) {
 
         Box(
@@ -67,7 +63,7 @@ fun ChampignonLike(viewModel: ChampignonViewModel) {
     } else {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+            contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(champignonslike, key = { it.name }) { champignon ->
@@ -104,7 +100,6 @@ fun ChampignonFavoriCard(champignonEntity: ChampignonEntity, viewModel: Champign
                 contentScale = ContentScale.Crop
             )
 
-            // Contenu textuel structuré comme dans Cueillir.kt
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = champignonEntity.name ?: "Sans nom",
@@ -130,8 +125,6 @@ fun ChampignonFavoriCard(champignonEntity: ChampignonEntity, viewModel: Champign
                         text = champignonEntity.type ?: "Type non trouvé",
                         style = MaterialTheme.typography.labelMedium
                     )
-
-                    // Bouton de suppression qui prend directement l'entité
                     DislikeButton(
                         champignonEntity = champignonEntity,
                         viewModel = viewModel

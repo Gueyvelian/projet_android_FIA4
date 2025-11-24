@@ -2,14 +2,10 @@ package com.example.myapplication
 
 import android.app.Application
 import android.util.Log
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import androidx.room.Room
-import com.example.myapplication.ui.theme.AppDatabase
-import com.example.myapplication.ui.theme.Champignon
-import com.example.myapplication.ui.theme.ChampignonDao
-import com.example.myapplication.ui.theme.ChampignonEntity
+import com.example.myapplication.ui.theme.repository.AppDatabase
+import com.example.myapplication.ui.theme.model.Champignon
+import com.example.myapplication.ui.theme.repository.ChampignonEntity
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO

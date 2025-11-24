@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.ui.theme.Champignon
-import com.example.myapplication.ui.theme.ChampignonEntity
+import com.example.myapplication.ui.theme.model.Champignon
+import com.example.myapplication.ui.theme.repository.ChampignonEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -20,7 +20,6 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
 
     fun getChampignon() {
         viewModelScope.launch {
-            // --- DÉBUT DE LA CORRECTION ---
             try {
                 // On essaie de faire l'appel réseau
                 champignons.value = repository.listeChampignons()
@@ -32,7 +31,6 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
                 champignons.value = emptyList()
                 // Ici, vous pourriez aussi mettre à jour un autre StateFlow pour afficher un message d'erreur à l'utilisateur
             }
-            // --- FIN DE LA CORRECTION ---
         } }
 
             /**
@@ -81,7 +79,6 @@ class ChampignonViewModel(application: Application) : AndroidViewModel(applicati
 
     }
 
-    //aller voir pourquoi on ne peu pas le metre dans le viewmodelscope
 
     fun addChampignon(champignon: Champignon) {
         viewModelScope.launch {
