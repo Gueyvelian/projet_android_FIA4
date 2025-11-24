@@ -37,7 +37,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import com.example.myapplication.repository.ChampignonEntity
 
-
 // Page qui permet d'afficher les champignon liké
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
