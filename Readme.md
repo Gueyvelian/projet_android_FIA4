@@ -1,23 +1,31 @@
-# The poisonous mushroom.
+# Champignon de la mort.
 
 ## Description des consignes à suivre
 
-Lors de cette 4e année à ISIS, nous avons eu l'occasion de découvrir un module "Android". Suite à ce dernier, nous avons dû développer une petite application aillant 3 interfaces, utilisant une API et une base de données.
+Lors de cette 4e année à ISIS, nous avons eu l'occasion de découvrir le module "Android". Suite à ce dernier, nous avons dû développer une petite application aillant 3 interfaces, utilisant une API (utilisation de glide pour le chargement des images grace à Ktor) et une base de données local (utilant ROOM).
 
 ## Descrition du projet
 
 Lors de ce projet, j'ai fait le choix d'utiliser l'api https://toxicshrooms.vercel.app/api/mushrooms.
 
-Cette API recense de nombreux champignons non-comestibles et comporte deux degrés de dangerosité:
+Cette API recense de nombreux champignons non-comestibles qui comporte deux degrés de dangerosité:
 - Empoisonner
 - Mortel
 
 ### Fonctionalitées
 
-Sur la première page, nous retrouvons la page d'accueil avec deux boutons, "cueillir" et "champignon liké".
-- Lorsqu'on clique sur le bouton "cueillir", on accède à une nouvelle page qui permet de chercher dans les différents champignons de l'api si le champignon que l'on a trouvé est toxique. Si c'est le cas, nous pouvons liker ce champignon et lui ajouter un lieu géographique (optionnel). (Ces données seront alors enregistrées dans une base de données en local afin de pouvoir les retrouver.).
+- Sur la première page, nous retrouvons la page d'accueil avec deux boutons, "Découvrir" (dans le code "Cueillir) et "Favoris" (dans le code ChampignonLike).
 
-- Lorsqu'on clique sur le bouton "champignon liké", on accède à une nouvelle interface qui nous permet de retrouver tous les champignons likés ainsi que le lieu où ils ont été trouvés (si ce champ a été rempli). Cette interface utilise une base de données en local.
+<img width="427" height="937" alt="image" src="https://github.com/user-attachments/assets/7243c078-5ca0-494b-9bba-10afa7ef6af7" />
 
-Afin de quitter ces deux pages et de retourné à la page d'accueil sur les deux pages précédentes, nous retrouvons un bouton "flèche" de retour en arrière.
-De plus, lorsque nous nous trouvons sur la page "cueillir" nous pouvons retrouver une petite icône "cœur" qui nous redirige vers la page "champignon liké" et sur la page "champignon liké" nous retrouvons une icône "loupe" qui nous redirige vers la page "cueillir".
+
+De plus, dans la bare de recherche du bas, nous pouvons retrouver 3 boutons qui nous permettent de naviguer sur les 3 pages de l'application. Nous y retrouvons un bouton "Découvir", un bouton "Accueil" et un bouton "Favori" (cette disposition est valable pour toutes les pages).
+
+- Lorsqu'on clique sur le bouton "Découvrir", on accède à une nouvelle page qui nous affiche une liste de tout les champignons toxique (présent dans l'api). Cette page permet aussi de chercher un champignon spécifique grace  à son nom. Si il n'y a pas de champignon corespondant à se nom dans l'api la phrase suivante s'affiche sur l'écrant "Aucun résultat trouvé". De plus, sur tout les champignon nous pouvons voir son nom, son nom courant ainsi que la dangerosité de son poison. A côté de cette description, nous pouvons liker le champignon. (Ces données seront alors enregistrées dans une base de données en local afin de pouvoir les retrouver). Lorsqu'on like un champignon le "coeur" passe en rouge sinon il reste "non coloré". En haut à gauche, nous avons à disposition, une flèche qui nous permet de faire un retour en arrière.
+
+<img width="427" height="940" alt="image" src="https://github.com/user-attachments/assets/15da0c80-4f45-4d89-9523-2a214caf0489" />
+
+- Lorsqu'on clique sur le bouton "Favoris", on accède à une nouvelle interface qui nous permet de retrouver tous les champignons likés (ils possèdent la même description que les champignon de la page "découvir"). Cette interface utilise une base de données en local, les champignon reste donc en favori si l'on quite l'application (et que nous y revenons plus tard dessus). Si nous voulons retirer un champignon liké de la liste des favoris, nous pouvons cliquer sur l'icône corbeille. Il disparait alors instantanément. Si il n'y a pas de champignon mis en favori, le texte suivant s'affiche: "Vous n'avez pas encore de favoris". Nous retrouvons en haut à gauche une flèche permetant de faire un retour en arrière.
+
+<img width="427" height="937" alt="image" src="https://github.com/user-attachments/assets/e6ac8d73-265c-4b3e-9119-5a4863a0e9c3" />
+
