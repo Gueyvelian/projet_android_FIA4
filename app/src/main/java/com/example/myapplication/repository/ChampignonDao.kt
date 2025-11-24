@@ -1,10 +1,9 @@
-package com.example.myapplication.ui.theme.repository
+package com.example.myapplication.repository
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.myapplication.ui.theme.repository.ChampignonEntity
 
 @Dao
 interface ChampignonDao {

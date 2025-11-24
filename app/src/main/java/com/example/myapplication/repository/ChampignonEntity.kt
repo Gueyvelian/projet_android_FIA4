@@ -1,8 +1,8 @@
-package com.example.myapplication.ui.theme.repository
+package com.example.myapplication.repository
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.myapplication.ui.theme.model.Champignon
+import com.example.myapplication.model.Champignon
 
 @Entity
 data class ChampignonEntity (

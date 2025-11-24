@@ -1,6 +1,6 @@
-package com.example.myapplication.ui.theme.model
+package com.example.myapplication.model
 
-import com.example.myapplication.ui.theme.repository.ChampignonEntity
+import com.example.myapplication.repository.ChampignonEntity
 import kotlinx.serialization.Serializable
 
 @Serializable

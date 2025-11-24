@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.theme.pages
+package com.example.myapplication.pages
 
 
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
-import com.example.myapplication.ui.theme.repository.ChampignonEntity
+import com.example.myapplication.repository.ChampignonEntity
 
 
 @OptIn(ExperimentalGlideComposeApi::class)

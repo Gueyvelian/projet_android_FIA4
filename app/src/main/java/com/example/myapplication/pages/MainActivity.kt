@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.theme.pages
+package com.example.myapplication.pages
 
 import android.annotation.SuppressLint
 import android.os.Bundle

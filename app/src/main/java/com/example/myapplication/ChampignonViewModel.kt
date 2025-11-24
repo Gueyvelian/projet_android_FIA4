@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.ui.theme.model.Champignon
-import com.example.myapplication.ui.theme.repository.ChampignonEntity
+import com.example.myapplication.model.Champignon
+import com.example.myapplication.repository.ChampignonEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
