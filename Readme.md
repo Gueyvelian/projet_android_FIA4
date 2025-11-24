@@ -14,10 +14,10 @@ Cette API recense de nombreux champignons non-comestibles qui comporte deux degr
 
 ### Fonctionalitées
 
-- Sur la première page, nous retrouvons la page d'accueil avec deux boutons, "Découvrir" (dans le code "Cueillir) et "Favoris" (dans le code ChampignonLike).
+- Sur la première page, nous retrouvons la page d'accueil avec deux boutons, "Découvrir" et "Favoris". C'est deux bouton, nous permettent de changer de page. (Les différentes pages sont décrite juste au dessous.)
+De plus, dans la bare de recherche du bas, nous pouvons retrouver 3 boutons qui nous permettent de naviguer sur les 3 pages de l'application. Nous y retrouvons un bouton "Découvir", un bouton "Accueil" et un bouton "Favori" (cette disposition est valable pour toutes les pages).
 
 <img width="247" height="540" alt="image" src="https://github.com/user-attachments/assets/9afa4c41-11a4-42f4-ad95-01b3e5651e00" />
-
 
 De plus, dans la bare de recherche du bas, nous pouvons retrouver 3 boutons qui nous permettent de naviguer sur les 3 pages de l'application. Nous y retrouvons un bouton "Découvir", un bouton "Accueil" et un bouton "Favori" (cette disposition est valable pour toutes les pages).
 
