@@ -9,7 +9,7 @@ Lors de cette 4e année à ISIS, nous avons eu l'occasion de découvrir le modul
 Lors de ce projet, j'ai fait le choix d'utiliser l'api https://toxicshrooms.vercel.app/api/mushrooms.
 
 Cette API recense de nombreux champignons non-comestibles qui comporte deux degrés de dangerosité:
-- Empoisonner
+- Empoisonné
 - Mortel
 
 ### Fonctionalitées
